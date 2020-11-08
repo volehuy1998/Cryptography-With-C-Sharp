@@ -7,11 +7,6 @@ namespace Ceasar
         private static int key = 3;
         private static readonly string message = "meet me after the toga party";
 
-        private static int Modulo(int a, int b)
-        {
-            return (a % b + b) % b;
-        }
-
         private static string Encrypt(string message)
         {
             string cipher = string.Empty;
@@ -23,7 +18,7 @@ namespace Ceasar
                 if (alphaIndex >= 0)
                 {
                     // c = (p + k) mod 26
-                    cipher += Defines.ALPHABET[Modulo(alphaIndex + key, Defines.ALPHABET.Length)];
+                    cipher += Defines.ALPHABET[MathHelpers.Modulo(alphaIndex + key, Defines.ALPHABET.Length)];
                 }
                 else
                 {
@@ -45,7 +40,7 @@ namespace Ceasar
                 if (cipherIndex >= 0)
                 {
                     // p = (c - k) mod 26
-                    msg += Defines.ALPHABET[Modulo(cipherIndex - key, Defines.ALPHABET.Length)];
+                    msg += Defines.ALPHABET[MathHelpers.Modulo(cipherIndex - key, Defines.ALPHABET.Length)];
                 }
                 else
                 {
