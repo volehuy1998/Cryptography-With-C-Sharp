@@ -1,9 +1,10 @@
-﻿namespace Ceasar
+﻿using Common;
+
+namespace Ceasar
 {
     class Program
     {
         private static int key = 3;
-        private static readonly string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private static readonly string message = "meet me after the toga party";
 
         private static int Modulo(int a, int b)
@@ -18,11 +19,11 @@
             for (int i = 0; i < message.Length; i++)
             {
                 char p = char.ToUpper(message[i]);
-                int alphaIndex = alphabet.IndexOf(p);
+                int alphaIndex = Defines.ALPHABET.IndexOf(p);
                 if (alphaIndex >= 0)
                 {
                     // c = (p + k) mod 26
-                    cipher += alphabet[Modulo(alphaIndex + key, alphabet.Length)];
+                    cipher += Defines.ALPHABET[Modulo(alphaIndex + key, Defines.ALPHABET.Length)];
                 }
                 else
                 {
@@ -40,11 +41,11 @@
             for (int i = 0; i < cipher.Length; i++)
             {
                 char p = char.ToUpper(cipher[i]);
-                int cipherIndex = alphabet.IndexOf(p);
+                int cipherIndex = Defines.ALPHABET.IndexOf(p);
                 if (cipherIndex >= 0)
                 {
                     // p = (c - k) mod 26
-                    msg += alphabet[Modulo(cipherIndex - key, alphabet.Length)];
+                    msg += Defines.ALPHABET[Modulo(cipherIndex - key, Defines.ALPHABET.Length)];
                 }
                 else
                 {
