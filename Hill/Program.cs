@@ -48,7 +48,7 @@ namespace Hill
 
             for (int i = 0; i < blockMessages.Count; i++)
             {
-                double[,] ps = null;
+                double[,] cs = null;
                 Matrix<double> matrixC = null;
                 Matrix<double> matrixP = null;
                 Matrix<double> matrixKxP = null;
@@ -69,10 +69,10 @@ namespace Hill
                 matrixKxP = matrixK.Multiply(matrixP);
                 matrixC = Modulo(matrixKxP, Defines.ALPHABET.Length);
 
-                ps = matrixC.Storage.ToArray();
-                for (int k = 0; k < ps.Length; k++)
+                cs = matrixC.Storage.ToArray();
+                for (int k = 0; k < cs.Length; k++)
                 {
-                    cipher += Defines.ALPHABET[(int)ps[k, FIRST_ELEMENT]];
+                    cipher += Defines.ALPHABET[(int)cs[k, FIRST_ELEMENT]];
                 }
             }
 
