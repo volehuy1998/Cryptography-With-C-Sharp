@@ -9,7 +9,7 @@ namespace Common
     public static class Defines
     {
         public static readonly string ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        private static readonly char[][] POLY_ALPHABETIC_SUBSTITUTION_TABLE = new char[26][]
+        public static readonly char[][] POLY_ALPHABETIC_SUBSTITUTION_TABLE = new char[26][]
         {
             new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' },
             new char[] { 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'A' },
