@@ -19,6 +19,8 @@ namespace Hill
             new double[] { 21, 18, 21 },
             new double[] { 02, 02, 19 },
         });
+        private static readonly int ONLY_ONE_ELEMENT = 1;
+        private static readonly int FIRST_ELEMENT = 0;
 
         public static Matrix<double> Modulo(Matrix<double> a, int b)
         {
@@ -56,10 +58,10 @@ namespace Hill
                 {
                     char p = char.ToUpper(blockMessages[i][j]);
                     int alphabetIndex = Defines.ALPHABET.IndexOf(p);
-                    matrixBlockMessage.Add(new double[1]);
+                    matrixBlockMessage.Add(new double[ONLY_ONE_ELEMENT]);
                     if (alphabetIndex >= 0)
                     {
-                        matrixBlockMessage[j].SetValue(alphabetIndex, 0);
+                        matrixBlockMessage[j].SetValue(alphabetIndex, FIRST_ELEMENT);
                     }
                 }
 
@@ -70,7 +72,7 @@ namespace Hill
                 ps = matrixC.Storage.ToArray();
                 for (int k = 0; k < ps.Length; k++)
                 {
-                    cipher += Defines.ALPHABET[(int)ps[k, 0]];
+                    cipher += Defines.ALPHABET[(int)ps[k, FIRST_ELEMENT]];
                 }
             }
 
