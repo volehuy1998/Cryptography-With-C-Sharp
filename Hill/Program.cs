@@ -22,21 +22,6 @@ namespace Hill
         private static readonly int ONLY_ONE_ELEMENT = 1;
         private static readonly int FIRST_ELEMENT = 0;
 
-        public static Matrix<double> Modulo(Matrix<double> a, int b)
-        {
-            var matrix = Matrix<double>.Build.Dense(a.RowCount, a.ColumnCount);
-
-            for (int i = 0; i < a.RowCount; i++)
-            {
-                for (int j = 0; j < a.ColumnCount; j++)
-                {
-                    matrix[i, j] = MathHelpers.Modulo((int)a[i, j], b);
-                }
-            }
-
-            return matrix;
-        }
-
         private static string Encrypt(string message, Matrix<double> key)
         {
             string cipher = string.Empty;
@@ -67,7 +52,7 @@ namespace Hill
 
                 matrixP = Matrix<double>.Build.DenseOfRows(matrixBlockMessage.ToArray());
                 matrixKxP = matrixK.Multiply(matrixP);
-                matrixC = Modulo(matrixKxP, Defines.ALPHABET.Length);
+                matrixC = matrixKxP.Modulus(Defines.ALPHABET.Length);
 
                 cs = matrixC.Storage.ToArray();
                 for (int k = 0; k < cs.Length; k++)
