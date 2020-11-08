@@ -9,6 +9,5 @@ namespace Common
     public static class Defines
     {
         public static readonly string ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        public static int a = 1;
     }
 }
