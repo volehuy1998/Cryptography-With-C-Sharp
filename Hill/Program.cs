@@ -89,7 +89,7 @@ namespace Hill
                 double[,] ps = null;
                 Matrix<double> matrixP = null;
                 Matrix<double> matrixC = null;
-                Matrix<double> matrixInverseKxP = null;
+                Matrix<double> matrixInverseKxC = null;
                 List<double[]> matrixBlockCipher = new List<double[]>();
 
                 for (int j = 0; j < blockCiphers[i].Length; j++)
@@ -104,8 +104,8 @@ namespace Hill
                 }
 
                 matrixC = Matrix<double>.Build.DenseOfRows(matrixBlockCipher.ToArray());
-                matrixInverseKxP = matrixInverseK.Multiply(matrixC);
-                matrixP = matrixInverseKxP.Modulus(Defines.ALPHABET.Length);
+                matrixInverseKxC = matrixInverseK.Multiply(matrixC);
+                matrixP = matrixInverseKxC.Modulus(Defines.ALPHABET.Length);
 
                 ps = matrixP.Storage.ToArray();
                 for (int k = 0; k < ps.Length; k++)
