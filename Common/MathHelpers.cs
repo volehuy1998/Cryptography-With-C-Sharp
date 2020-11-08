@@ -14,20 +14,5 @@ namespace Common
         {
             return (a % b + b) % b;
         }
-
-        public static Matrix<double> Modulo(Matrix<double> a, int b)
-        {
-            var matrix = Matrix<double>.Build.Dense(a.RowCount, a.ColumnCount);
-
-            for (int i = 0; i < a.RowCount; i++)
-            {
-                for (int j = 0; j < a.ColumnCount; j++)
-                {
-                    matrix[i, j] = Modulo((int)a[i, j], b);
-                }
-            }
-
-            return matrix;
-        }
     }
 }
