@@ -56,15 +56,22 @@ namespace Hill
             return result;
         }
 
+        private static List<string> SplitStringToMultiBlock(string str, int blockSize)
+        {
+            List<string> blocks = new List<string>();
+
+            for (int i = 0; i < str.Length; i += blockSize)
+                blocks.Add(str.Substring(i, Math.Min(blockSize, str.Length - i)));
+
+            return blocks;
+        }
+
         private static string Encrypt(string message, Matrix<double> key)
         {
             string cipher = string.Empty;
             int blockSize = key.ColumnCount;
             Matrix<double> matrixC = Matrix<double>.Build.Dense(message.Length / key.ColumnCount, blockSize);
-            List<string> blockMessages = new List<string>();
-
-            for (int i = 0; i < message.Length; i += blockSize)
-                blockMessages.Add(message.Substring(i, Math.Min(blockSize, message.Length - i)));
+            List<string> blockMessages = SplitStringToMultiBlock(message, blockSize);
 
             for (int i = 0; i < blockMessages.Count; i++)
             {
@@ -97,10 +104,7 @@ namespace Hill
             BigInteger detInverseK = MathHelpers.Modulo(BigInteger.Pow(detK, MathHelpers.EulerTotient(Defines.ALPHABET.Length) - 1), Defines.ALPHABET.Length);
             Matrix<double> matrixP = Matrix<double>.Build.Dense(cipher.Length / key.ColumnCount, blockSize);
             Matrix<double> matrixInverseK = AdjK(matrixK).Multiply((double)detInverseK).Modulus(Defines.ALPHABET.Length);
-            List<string> blockCiphers = new List<string>();
-
-            for (int i = 0; i < cipher.Length; i += blockSize)
-                blockCiphers.Add(cipher.Substring(i, Math.Min(blockSize, cipher.Length - i)));
+            List<string> blockCiphers = SplitStringToMultiBlock(cipher, blockSize);
 
             for (int i = 0; i < blockCiphers.Count; i++)
             {
