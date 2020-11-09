@@ -120,13 +120,7 @@ namespace Hill
                 matrixP.SetRow(i, Vector<double>.Build.DenseOfArray(subMatrixP.ToColumnMajorArray()));
             }
 
-            for (int i = 0; i < matrixP.RowCount; i++)
-            {
-                for (int j = 0; j < matrixP.ColumnCount; j++)
-                {
-                    msg += Defines.ALPHABET[(int)matrixP[i, j]];
-                }
-            }
+            msg = ConvertMatrixToString(matrixP);
 
             return msg;
         }
