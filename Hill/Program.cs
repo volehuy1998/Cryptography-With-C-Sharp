@@ -82,6 +82,7 @@ namespace Hill
         {
             string cipher = string.Empty;
             int blockSize = key.ColumnCount;
+            message += new string(' ', blockSize - (message.Length % blockSize));
             Matrix<double> matrixC = Matrix<double>.Build.Dense(message.Length / key.ColumnCount, blockSize);
             List<string> blockMessages = SplitStringToMultiBlock(message, blockSize);
 
