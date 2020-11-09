@@ -19,8 +19,6 @@ namespace Hill
             new double[] { 21, 18, 21 },
             new double[] { 02, 02, 19 },
         });
-        private static readonly int ONLY_ONE_ELEMENT = 1;
-        private static readonly int FIRST_ELEMENT = 0;
 
         private static Matrix<double> AdjK(Matrix<double> key)
         {
@@ -87,7 +85,7 @@ namespace Hill
                 }
 
                 subMatrixP = Matrix<double>.Build.DenseOfRows(matrixBlockMessage.ToArray());
-                subMatrixC = matrixK.Multiply(subMatrixP).Modulus(Defines.ALPHABET.Length);
+                subMatrixC = key.Multiply(subMatrixP).Modulus(Defines.ALPHABET.Length);
                 matrixC.SetRow(i, Vector<double>.Build.DenseOfArray(subMatrixC.ToColumnMajorArray()));
             }
 
@@ -100,10 +98,10 @@ namespace Hill
         {
             string msg = string.Empty;
             int blockSize = key.ColumnCount;
-            int detK = (int)matrixK.Determinant();
+            int detK = (int)key.Determinant();
             BigInteger detInverseK = MathHelpers.Modulo(BigInteger.Pow(detK, MathHelpers.EulerTotient(Defines.ALPHABET.Length) - 1), Defines.ALPHABET.Length);
             Matrix<double> matrixP = Matrix<double>.Build.Dense(cipher.Length / key.ColumnCount, blockSize);
-            Matrix<double> matrixInverseK = AdjK(matrixK).Multiply((double)detInverseK).Modulus(Defines.ALPHABET.Length);
+            Matrix<double> matrixInverseK = AdjK(key).Multiply((double)detInverseK).Modulus(Defines.ALPHABET.Length);
             List<string> blockCiphers = SplitStringToMultiBlock(cipher, blockSize);
 
             for (int i = 0; i < blockCiphers.Count; i++)
