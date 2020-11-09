@@ -22,10 +22,21 @@ namespace Hill
         private static readonly int ONLY_ONE_ELEMENT = 1;
         private static readonly int FIRST_ELEMENT = 0;
 
-        private static Matrix<double> AdjK(Matrix<double> matrixK)
+        private static Matrix<double> AdjK(Matrix<double> key)
         {
-            Matrix<double> matrixAdjK = matrixK.Clone();
-            Matrix<double> tempMatrixK = matrixK.Clone();
+            Matrix<double> matrixAdjK = Matrix<double>.Build.Dense(key.RowCount, key.ColumnCount);
+
+            for (int i = 0; i < key.RowCount; i++)
+            {
+                for (int j = 0; j < key.ColumnCount; j++)
+                {
+                    Matrix<double> subMatrix = key.RemoveRow(i);
+                    subMatrix = subMatrix.RemoveColumn(j);
+                    matrixAdjK[i, j] = Math.Pow(-1.0, i) * Math.Pow(-1.0, j) * (int)subMatrix.Determinant();
+                }
+            }
+
+            matrixAdjK = matrixAdjK.Transpose();
 
             return matrixAdjK;
         }
@@ -77,8 +88,8 @@ namespace Hill
             string msg = string.Empty;
             int blockSize = key.ColumnCount;
             int detK = (int)matrixK.Determinant();
-            BigInteger detInverseK = MathHelpers.Modulo(BigInteger.Pow(detK, MathHelpers.EulerTotient(26) - 1), Defines.ALPHABET.Length);
-            Matrix<double> matrixInverseK = AdjK(matrixK).Multiply((double)detInverseK);
+            BigInteger detInverseK = MathHelpers.Modulo(BigInteger.Pow(detK, MathHelpers.EulerTotient(Defines.ALPHABET.Length) - 1), Defines.ALPHABET.Length);
+            Matrix<double> matrixInverseK = AdjK(matrixK).Multiply((double)detInverseK).Modulus(Defines.ALPHABET.Length);
             List<string> blockCiphers = new List<string>();
 
             for (int i = 0; i < cipher.Length; i += blockSize)
@@ -103,7 +114,8 @@ namespace Hill
                     }
                 }
 
-                matrixC = Matrix<double>.Build.DenseOfRows(matrixBlockCipher.ToArray());
+                matrixC = Matrix<double>.Build.DenseOfRowArrays(matrixBlockCipher.ToArray());
+
                 matrixInverseKxC = matrixInverseK.Multiply(matrixC);
                 matrixP = matrixInverseKxC.Modulus(Defines.ALPHABET.Length);
 
