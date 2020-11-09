@@ -64,7 +64,19 @@ namespace Hill
             return blocks;
         }
 
-        private static Matrix<double> ConvertStringToMatrix
+        private static List<double[]> ConvertStringToBlocks(string str)
+        {
+            List<double[]> subBlocks = new List<double[]>();
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                char p = char.ToUpper(str[i]);
+                int alphabetIndex = Defines.ALPHABET.IndexOf(p);
+                subBlocks.Add(new double[] { alphabetIndex });
+            }
+
+            return subBlocks;
+        }
 
         private static string Encrypt(string message, Matrix<double> key)
         {
@@ -77,14 +89,7 @@ namespace Hill
             {
                 Matrix<double> subMatrixC = null;
                 Matrix<double> subMatrixP = null;
-                List<double[]> subBlockMessage = new List<double[]>();
-
-                for (int j = 0; j < blockMessages[i].Length; j++)
-                {
-                    char p = char.ToUpper(blockMessages[i][j]);
-                    int alphabetIndex = Defines.ALPHABET.IndexOf(p);
-                    subBlockMessage.Add(new double[] { alphabetIndex });
-                }
+                List<double[]> subBlockMessage = ConvertStringToBlocks(blockMessages[i]);
 
                 subMatrixP = Matrix<double>.Build.DenseOfRows(subBlockMessage.ToArray());
                 subMatrixC = key.Multiply(subMatrixP).Modulus(Defines.ALPHABET.Length);
@@ -110,14 +115,7 @@ namespace Hill
             {
                 Matrix<double> subMatrixP = null;
                 Matrix<double> subMatrixC = null;
-                List<double[]> subBlockCipher = new List<double[]>();
-
-                for (int j = 0; j < blockCiphers[i].Length; j++)
-                {
-                    char p = char.ToUpper(blockCiphers[i][j]);
-                    int alphabetIndex = Defines.ALPHABET.IndexOf(p);
-                    subBlockCipher.Add(new double[] { alphabetIndex });
-                }
+                List<double[]> subBlockCipher = ConvertStringToBlocks(blockCiphers[i]);
 
                 subMatrixC = Matrix<double>.Build.DenseOfRowArrays(subBlockCipher.ToArray());
                 subMatrixP = matrixInverseK.Multiply(subMatrixC).Modulus(Defines.ALPHABET.Length);
