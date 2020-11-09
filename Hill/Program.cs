@@ -75,16 +75,16 @@ namespace Hill
             {
                 Matrix<double> subMatrixC = null;
                 Matrix<double> subMatrixP = null;
-                List<double[]> matrixBlockMessage = new List<double[]>();
+                List<double[]> subMatrixBlockMessage = new List<double[]>();
 
                 for (int j = 0; j < blockMessages[i].Length; j++)
                 {
                     char p = char.ToUpper(blockMessages[i][j]);
                     int alphabetIndex = Defines.ALPHABET.IndexOf(p);
-                    matrixBlockMessage.Add(new double[] { alphabetIndex });
+                    subMatrixBlockMessage.Add(new double[] { alphabetIndex });
                 }
 
-                subMatrixP = Matrix<double>.Build.DenseOfRows(matrixBlockMessage.ToArray());
+                subMatrixP = Matrix<double>.Build.DenseOfRows(subMatrixBlockMessage.ToArray());
                 subMatrixC = key.Multiply(subMatrixP).Modulus(Defines.ALPHABET.Length);
                 matrixC.SetRow(i, Vector<double>.Build.DenseOfArray(subMatrixC.ToColumnMajorArray()));
             }
