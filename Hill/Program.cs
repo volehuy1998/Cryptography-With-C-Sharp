@@ -89,6 +89,7 @@ namespace Hill
             int blockSize = key.ColumnCount;
             int detK = (int)matrixK.Determinant();
             BigInteger detInverseK = MathHelpers.Modulo(BigInteger.Pow(detK, MathHelpers.EulerTotient(Defines.ALPHABET.Length) - 1), Defines.ALPHABET.Length);
+            Matrix<double> matrixP = Matrix<double>.Build.Dense(cipher.Length / key.ColumnCount, blockSize);
             Matrix<double> matrixInverseK = AdjK(matrixK).Multiply((double)detInverseK).Modulus(Defines.ALPHABET.Length);
             List<string> blockCiphers = new List<string>();
 
@@ -97,32 +98,27 @@ namespace Hill
 
             for (int i = 0; i < blockCiphers.Count; i++)
             {
-                double[,] ps = null;
-                Matrix<double> matrixP = null;
-                Matrix<double> matrixC = null;
-                Matrix<double> matrixInverseKxC = null;
-                List<double[]> matrixBlockCipher = new List<double[]>();
+                Matrix<double> subMatrixP = null;
+                Matrix<double> subMatrixC = null;
+                List<double[]> subMatrixBlockCipher = new List<double[]>();
 
                 for (int j = 0; j < blockCiphers[i].Length; j++)
                 {
                     char p = char.ToUpper(blockCiphers[i][j]);
                     int alphabetIndex = Defines.ALPHABET.IndexOf(p);
-                    matrixBlockCipher.Add(new double[ONLY_ONE_ELEMENT]);
-                    if (alphabetIndex >= 0)
-                    {
-                        matrixBlockCipher[j].SetValue(alphabetIndex, FIRST_ELEMENT);
-                    }
+                    subMatrixBlockCipher.Add(new double[] { alphabetIndex });
                 }
 
-                matrixC = Matrix<double>.Build.DenseOfRowArrays(matrixBlockCipher.ToArray());
+                subMatrixC = Matrix<double>.Build.DenseOfRowArrays(subMatrixBlockCipher.ToArray());
+                subMatrixP = matrixInverseK.Multiply(subMatrixC).Modulus(Defines.ALPHABET.Length);
+                matrixP.SetRow(i, Vector<double>.Build.DenseOfArray(subMatrixP.ToColumnMajorArray()));
+            }
 
-                matrixInverseKxC = matrixInverseK.Multiply(matrixC);
-                matrixP = matrixInverseKxC.Modulus(Defines.ALPHABET.Length);
-
-                ps = matrixP.Storage.ToArray();
-                for (int k = 0; k < ps.Length; k++)
+            for (int i = 0; i < matrixP.RowCount; i++)
+            {
+                for (int j = 0; j < matrixP.ColumnCount; j++)
                 {
-                    msg += Defines.ALPHABET[(int)ps[k, FIRST_ELEMENT]];
+                    msg += Defines.ALPHABET[(int)matrixP[i, j]];
                 }
             }
 
