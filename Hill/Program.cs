@@ -117,7 +117,7 @@ namespace Hill
             int detK = (int)key.Determinant();
             BigInteger detInverseK = MathHelpers.Modulo(BigInteger.Pow(detK, MathHelpers.EulerTotient(Defines.ALPHABET.Length) - 1), Defines.ALPHABET.Length);
             Matrix<double> matrixP = Matrix<double>.Build.Dense(cipher.Length / key.ColumnCount, blockSize);
-            Matrix<double> matrixInverseK = AdjK(key).Modulus(26).Multiply((double)detInverseK).Modulus(Defines.ALPHABET.Length);
+            Matrix<double> matrixInverseK = AdjK(key).Modulus(Defines.ALPHABET.Length).Multiply((double)detInverseK).Modulus(Defines.ALPHABET.Length);
             List<string> blockCiphers = SplitStringToMultiBlock(cipher, blockSize);
 
             for (int i = 0; i < blockCiphers.Count; i++)
