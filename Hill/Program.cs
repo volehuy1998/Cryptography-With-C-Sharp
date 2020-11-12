@@ -30,7 +30,8 @@ namespace Hill
                 {
                     Matrix<double> subMatrix = key.RemoveRow(i);
                     subMatrix = subMatrix.RemoveColumn(j);
-                    matrixAdjK[i, j] = Math.Pow(-1.0, i) * Math.Pow(-1.0, j) * (int)subMatrix.Determinant();
+                    double det = subMatrix.Determinant();
+                    matrixAdjK[i, j] = Math.Pow(-1.0, i) * Math.Pow(-1.0, j) * Math.Round(det, 2, MidpointRounding.AwayFromZero);//(int)(det > 0 ? det + 0.1 : det - 0.1);
                 }
             }
 
@@ -82,7 +83,7 @@ namespace Hill
         {
             string cipher = string.Empty;
             int blockSize = key.ColumnCount;
-            message += new string(' ', blockSize - (message.Length % blockSize));
+            message += new string(' ', (blockSize - (message.Length % blockSize)) % blockSize);
             Matrix<double> matrixC = Matrix<double>.Build.Dense(message.Length / key.ColumnCount, blockSize);
             List<string> blockMessages = SplitStringToMultiBlock(message, blockSize);
 
@@ -109,7 +110,7 @@ namespace Hill
             int detK = (int)key.Determinant();
             BigInteger detInverseK = MathHelpers.Modulo(BigInteger.Pow(detK, MathHelpers.EulerTotient(Defines.ALPHABET.Length) - 1), Defines.ALPHABET.Length);
             Matrix<double> matrixP = Matrix<double>.Build.Dense(cipher.Length / key.ColumnCount, blockSize);
-            Matrix<double> matrixInverseK = AdjK(key).Multiply((double)detInverseK).Modulus(Defines.ALPHABET.Length);
+            Matrix<double> matrixInverseK = AdjK(key).Modulus(26).Multiply((double)detInverseK).Modulus(Defines.ALPHABET.Length);
             List<string> blockCiphers = SplitStringToMultiBlock(cipher, blockSize);
 
             for (int i = 0; i < blockCiphers.Count; i++)
