@@ -79,11 +79,17 @@ namespace Hill
             return subBlocks;
         }
 
+        private static string PaddingMatchWithBlockSize(string str, int blockSize)
+        {
+            string modifedString = str + new string(' ', (blockSize - (str.Length % blockSize)) % blockSize);
+            return modifedString;
+        }
+
         private static string Encrypt(string message, Matrix<double> key)
         {
             string cipher = string.Empty;
             int blockSize = key.ColumnCount;
-            message += new string(' ', (blockSize - (message.Length % blockSize)) % blockSize);
+            message = PaddingMatchWithBlockSize(message, blockSize);
             Matrix<double> matrixC = Matrix<double>.Build.Dense(message.Length / key.ColumnCount, blockSize);
             List<string> blockMessages = SplitStringToMultiBlock(message, blockSize);
 
@@ -107,7 +113,7 @@ namespace Hill
         {
             string msg = string.Empty;
             int blockSize = key.ColumnCount;
-            cipher += new string(' ', (blockSize - (cipher.Length % blockSize)) % blockSize);
+            cipher = PaddingMatchWithBlockSize(cipher, blockSize);
             int detK = (int)key.Determinant();
             BigInteger detInverseK = MathHelpers.Modulo(BigInteger.Pow(detK, MathHelpers.EulerTotient(Defines.ALPHABET.Length) - 1), Defines.ALPHABET.Length);
             Matrix<double> matrixP = Matrix<double>.Build.Dense(cipher.Length / key.ColumnCount, blockSize);
