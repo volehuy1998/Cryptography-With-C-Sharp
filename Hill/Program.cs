@@ -31,7 +31,7 @@ namespace Hill
                     Matrix<double> subMatrix = key.RemoveRow(i);
                     subMatrix = subMatrix.RemoveColumn(j);
                     double det = subMatrix.Determinant();
-                    matrixAdjK[i, j] = Math.Pow(-1.0, i) * Math.Pow(-1.0, j) * Math.Round(det, 2, MidpointRounding.AwayFromZero);//(int)(det > 0 ? det + 0.1 : det - 0.1);
+                    matrixAdjK[i, j] = Math.Pow(-1.0, i) * Math.Pow(-1.0, j) * Math.Round(det, 2, MidpointRounding.AwayFromZero);
                 }
             }
 
