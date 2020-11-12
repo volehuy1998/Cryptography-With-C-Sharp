@@ -107,6 +107,7 @@ namespace Hill
         {
             string msg = string.Empty;
             int blockSize = key.ColumnCount;
+            cipher += new string(' ', (blockSize - (cipher.Length % blockSize)) % blockSize);
             int detK = (int)key.Determinant();
             BigInteger detInverseK = MathHelpers.Modulo(BigInteger.Pow(detK, MathHelpers.EulerTotient(Defines.ALPHABET.Length) - 1), Defines.ALPHABET.Length);
             Matrix<double> matrixP = Matrix<double>.Build.Dense(cipher.Length / key.ColumnCount, blockSize);
