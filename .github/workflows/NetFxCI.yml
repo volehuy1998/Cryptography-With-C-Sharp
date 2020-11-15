@@ -33,4 +33,4 @@ jobs:
         run: nuget restore Crypto.sln
         
       - name: Build the Solution
-        run: msbuild Crypto.sln
+        run: msbuild Crypto.sln /p:Configuration=Release
