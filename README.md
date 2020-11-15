@@ -1,5 +1,5 @@
 # Cryptography-With-C-Sharp
-Learn crypto with C#
+![CI](https://github.com/volehuy1998/Cryptography-With-C-Sharp/workflows/CI/badge.svg)
 ## 08/11/2020
 Symmetric Cryptography <br />
 <ol>
