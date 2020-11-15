@@ -13,12 +13,23 @@ namespace Hill
     class Program
     {
         private static readonly string message = "paymoremoney";
-        private static readonly Matrix<double> matrixK = Matrix<double>.Build.DenseOfRows(new double[][]
+        private static readonly string key = "RRFVSVCCT";
+
+        private static Matrix<double> GenerateKey(string key)
         {
-            new double[] { 17, 17, 05 },
-            new double[] { 21, 18, 21 },
-            new double[] { 02, 02, 19 },
-        });
+            int size = (int)Math.Sqrt(key.Length);
+            Matrix<double> matrixKey = Matrix<double>.Build.Dense(size, size);
+            List<string> keyBlocks = SplitStringToMultiBlock(key, size);
+
+            for (int i = 0; i < size; i++)
+            {
+                List<double[]> subKeyRow = ConvertStringToBlocks(keyBlocks[i]);
+                Matrix<double> subMatrixKey = Matrix<double>.Build.DenseOfRows(subKeyRow.ToArray());
+                matrixKey.SetRow(i, Vector<double>.Build.DenseOfArray(subMatrixKey.ToRowMajorArray()));
+            }
+
+            return matrixKey;
+        }
 
         private static Matrix<double> AdjK(Matrix<double> key)
         {
@@ -138,8 +149,9 @@ namespace Hill
 
         static void Main(string[] args)
         {
-            string cipher = Encrypt(message, matrixK);
-            string msg = Decrypt(cipher, matrixK);
+            Matrix<double> matrixKey = GenerateKey(key);
+            string cipher = Encrypt(message, matrixKey);
+            string msg = Decrypt(cipher, matrixKey);
         }
     }
 }
