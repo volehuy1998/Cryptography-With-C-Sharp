@@ -52,7 +52,6 @@ namespace Vigenère
                 }
             }
 
-
             return msg;
         }
 
