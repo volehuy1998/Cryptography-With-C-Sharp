@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyDES", "TinyDES\TinyDES.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A51", "A51\A51.csproj", "{BE16F202-0468-4F86-99FF-A24916EBDDE0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandBox", "SandBox\SandBox.csproj", "{0C35EEA4-CEDE-493C-883E-5DBE19E68D95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{BE16F202-0468-4F86-99FF-A24916EBDDE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE16F202-0468-4F86-99FF-A24916EBDDE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE16F202-0468-4F86-99FF-A24916EBDDE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C35EEA4-CEDE-493C-883E-5DBE19E68D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C35EEA4-CEDE-493C-883E-5DBE19E68D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C35EEA4-CEDE-493C-883E-5DBE19E68D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C35EEA4-CEDE-493C-883E-5DBE19E68D95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
