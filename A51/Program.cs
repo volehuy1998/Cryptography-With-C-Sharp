@@ -28,8 +28,8 @@ namespace A51
             string z = null;
             Console.Write("P= ");
             p = Console.ReadLine();
-            Console.Write("K= ");
-            k = Console.ReadLine();
+
+            k = "10010101001110100110000"; //Tiny A5/1 key
             string si = null;
             x = k.Substring(0, 6);
             y = k.Substring(6, 8);
@@ -72,7 +72,7 @@ namespace A51
                 }
             }
             Console.WriteLine("s= "+ si);
-            Console.WriteLine("c= "+ (Int32.Parse(p) ^ Int32.Parse(si)));
+            Console.WriteLine("c= "+ (Int64.Parse(p) ^ Int64.Parse(si)));
             Console.ReadLine();
         }
     }
