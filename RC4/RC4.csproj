@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BE16F202-0468-4F86-99FF-A24916EBDDE0}</ProjectGuid>
+    <ProjectGuid>{EA92FA8C-9C26-4C0D-B7E4-947C479B2761}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>A51</RootNamespace>
-    <AssemblyName>A51</AssemblyName>
+    <RootNamespace>RC4</RootNamespace>
+    <AssemblyName>RC4</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -48,12 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{12e7fa25-16e9-4ed3-ab2a-73141cb864d8}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

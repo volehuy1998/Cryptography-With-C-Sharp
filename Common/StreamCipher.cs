@@ -3,23 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common;
 
-namespace A51
+namespace Common
 {
-    class Program
+    public class StreamCipher
     {
-        private static int maj(int x, int y, int z)
-        {
-            if (x+y+z >= 2)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
         public static List<string> StringToBin(string inputstring)
         {
             // Creating array of string length  
@@ -157,7 +145,7 @@ namespace A51
                 }
                 else if (input == "^")
                 {
-                    listOutput.Add("11111");                    
+                    listOutput.Add("11111");
                 }
             }
             return listOutput;
@@ -296,103 +284,6 @@ namespace A51
             {
                 return null;
             }
-        }
-        static void Main(string[] args)
-        {
-            string p = null;
-            string k = null;
-            string x = null;
-            string y = null;
-            string z = null;
-            Console.Write("PlanText= ");
-            p = Console.ReadLine();
-            var list = StringToBin(p.ToUpper());
-            //k = "10010101001110100110000"; //Tiny A5/1 key
-              k = "10010101100110100110110";
-            x = k.Substring(0, 6); //X gồm 6 bit (x0; x1; :::; x5)
-            y = k.Substring(6, 8); //Y gồm 8 bit (y0; y1; :::; y7)
-            z = k.Substring(14, 9); //Y gồm 8 bit (y0; y1; :::; y7)
-            string cyperText = null;
-            List<int> outputList = new List<int>();
-            foreach (var item in list)
-            {
-                string si = QuaySi(item,x,y,z,k);
-                Console.WriteLine(" p= {0}", item);
-                //Đang gặp lội khi cInt mod 26 thì output sai ký tự
-                var cInt = (Convert.ToInt32(item, 2) ^ Convert.ToInt32(si, 2));// XOR 2 giá trị plantext và si giá trị Int
-                outputList.Add(Convert.ToInt32(item, 2) ^ Convert.ToInt32(si, 2));
-                Console.WriteLine("si= " + si);
-                Console.WriteLine("c= {0} <=> {1}", cInt, IntToString(cInt));
-                Console.WriteLine("---------------");
-                cyperText = cyperText + IntToString(cInt);
-            }
-            Console.WriteLine("CyperText= " + cyperText);
-            Console.ReadLine();
-            Console.WriteLine("Decryption...");
-            string planText = null;
-            foreach (var item in outputList)
-            {
-                string input = Convert.ToString(item, 2);
-                    string newInput = null;
-                    for (int i = input.Length; i < 5; i++)
-                    {
-                        newInput = newInput + 0;
-                    }
-                    input = newInput + input;
-                string si = QuaySi(input, x, y, z, k);
-                Console.WriteLine(" p= {0}", input);
-                //Đang gặp lỗi khi cInt mod 26 thì output sai ký tự
-                var cInt = (Convert.ToInt32(input, 2) ^ Convert.ToInt32(si, 2));// XOR 2 giá trị plantext và si giá trị Int
-                Console.WriteLine("si= " + si);
-                Console.WriteLine("c= {0} <=> {1}", cInt, IntToString(cInt));
-                Console.WriteLine("---------------");
-                planText = planText + IntToString(cInt);
-            }
-            Console.WriteLine("PlanText= " + planText);
-            Console.ReadLine();
-
-        }
-        public static string QuaySi(string input, string x, string y, string z, string k)
-        {
-            string si = null;
-            for (int i = 0; i < input.Length; i++)
-            {
-                if (k.Length == 23) //Tiny A5/1 key
-                {
-                    int X = Int32.Parse(x.Substring(1, 1)), //t tại x
-                        Y = Int32.Parse(y.Substring(3, 1)), //t tại y
-                        Z = Int32.Parse(z.Substring(3, 1)); //t tại z
-                    if (X == maj(X, Y, Z))
-                    {
-                        //Quay X - XOR t
-                        int t = Int32.Parse(x.Substring(2, 1))
-                            ^ Int32.Parse(x.Substring(4, 1))
-                            ^ Int32.Parse(x.Substring(5, 1));
-                        x = t + x.Substring(0, 5);
-                    }
-                    if (Y == maj(X, Y, Z))
-                    {
-                        //Quay Y - XOR t
-                        int t = Int32.Parse(y.Substring(6, 1))
-                            ^ Int32.Parse(y.Substring(7, 1));
-                        y = t + y.Substring(0, 7);
-                    }
-                    if (Z == maj(X, Y, Z))
-                    {
-                        //Quay Z - XOR t
-                        int t = Int32.Parse(z.Substring(2, 1))
-                            ^ Int32.Parse(z.Substring(7, 1))
-                            ^ Int32.Parse(z.Substring(8, 1));
-                        z = t + z.Substring(0, 8);
-                    }
-                    int temp = (Int32.Parse(x.Substring(5, 1))
-                        ^ Int32.Parse(y.Substring(7, 1))
-                        ^ Int32.Parse(z.Substring(8, 1)));
-                    si = si + temp;
-                }
-            }
-
-            return si;
         }
     }
 }
