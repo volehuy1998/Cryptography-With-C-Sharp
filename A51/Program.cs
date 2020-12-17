@@ -138,110 +138,109 @@ namespace A51
             }
             return listOutput;
         }
-        public static string BinToString(string input)
+        public static string IntToString(int input)
         {
-            input = input.ToUpper();
-            if (input == "0")
+            if (input == 0)
             {
                 return "A";
             }
-            else if (input == "1")
+            else if (input == 1)
             {
                 return "B";
             }
-            else if (input == "10")
+            else if (input == 2)
             {
                 return "C";
             }
-            else if (input == "11")
+            else if (input == 3)
             {
                 return "D";
             }
-            else if (input == "100")
+            else if (input == 4)
             {
                 return "E";
             }
-            else if (input == "101")
+            else if (input == 5)
             {
                 return "F";
             }
-            else if (input == "110")
+            else if (input == 6)
             {
                 return "G";
             }
-            else if (input == "111")
+            else if (input == 7)
             {
                 return "H";
             }
-            else if (input == "1000")
+            else if (input == 8)
             {
                 return "I";
             }
-            else if (input == "1001")
+            else if (input == 9)
             {
                 return "J";
             }
-            else if (input == "1010")
+            else if (input == 10)
             {
                 return "K";
             }
-            else if (input == "1011")
+            else if (input == 11)
             {
                 return "L";
             }
-            else if (input == "1100")
+            else if (input == 12)
             {
                 return "M";
             }
-            else if (input == "1101")
+            else if (input == 13)
             {
                 return "N";
             }
-            else if (input == "1110")
+            else if (input == 14)
             {
                 return "O";
             }
-            else if (input == "1111")
+            else if (input == 15)
             {
                 return "P";
             }
-            else if (input == "10000")
+            else if (input == 16)
             {
                 return "Q";
             }
-            else if (input == "10001")
+            else if (input == 17)
             {
                 return "R";
             }
-            else if (input == "10010")
+            else if (input == 18)
             {
                 return "S";
             }
-            else if (input == "10011")
+            else if (input == 19)
             {
                 return "T";
             }
-            else if (input == "10100")
+            else if (input == 20)
             {
                 return "U";
             }
-            else if (input == "10101")
+            else if (input == 21)
             {
                 return "V";
             }
-            else if (input == "10110")
+            else if (input == 22)
             {
                 return "W";
             }
-            else if (input == "10111")
+            else if (input == 23)
             {
                 return "X";
             }
-            else if (input == "11000")
+            else if (input == 24)
             {
                 return "Y";
             }
-            else if (input == "11001")
+            else if (input == 25)
             {
                 return "Z";
             }
@@ -266,55 +265,87 @@ namespace A51
             y = k.Substring(6, 8); //Y gồm 8 bit (y0; y1; :::; y7)
             z = k.Substring(14, 9); //Y gồm 8 bit (y0; y1; :::; y7)
             string cyperText = null;
+            List<int> outputList = new List<int>();
             foreach (var item in list)
             {
+                string si = QuaySi(item,x,y,z,k);
                 Console.WriteLine(" p= {0}", item);
-                string si = null;
-                for (int i = 0; i < item.Length; i++)
-                {
-                    if (k.Length == 23) //Tiny A5/1 key
-                    {
-                        int X = Int32.Parse(x.Substring(1, 1)), //t tại x
-                            Y = Int32.Parse(y.Substring(3, 1)), //t tại y
-                            Z = Int32.Parse(z.Substring(3, 1)); //t tại z
-                        if (X == maj(X, Y, Z))
-                        {
-                            //Quay X - XOR t
-                            int t = Int32.Parse(x.Substring(2, 1))
-                                ^ Int32.Parse(x.Substring(4, 1))
-                                ^ Int32.Parse(x.Substring(5, 1));
-                            x = t + x.Substring(0, 5);
-                        }
-                        if (Y == maj(X, Y, Z))
-                        {
-                            //Quay Y - XOR t
-                            int t = Int32.Parse(y.Substring(6, 1))
-                                ^ Int32.Parse(y.Substring(7, 1));
-                            y = t + y.Substring(0, 7);
-                        }
-                        if (Z == maj(X, Y, Z))
-                        {
-                            //Quay Z - XOR t
-                            int t = Int32.Parse(z.Substring(2, 1))
-                                ^ Int32.Parse(z.Substring(7, 1))
-                                ^ Int32.Parse(z.Substring(8, 1));
-                            z = t + z.Substring(0, 8);
-                        }
-                        int temp = (Int32.Parse(x.Substring(5, 1))
-                            ^ Int32.Parse(y.Substring(7, 1))
-                            ^ Int32.Parse(z.Substring(8, 1)));
-                        si = si + temp;
-                    }
-                }
-                var cInt = (Convert.ToInt32(item, 2) ^ Convert.ToInt32(si, 2)) % 26;// XOR 2 giá trị plantext và si giá trị Ỉnt
-                var c = Convert.ToString(cInt, 2); // Convert về giá trị binary
+                //Đang gặp lội khi cInt mod 26 thì output sai ký tự
+                var cInt = (Convert.ToInt32(item, 2) ^ Convert.ToInt32(si, 2)) % 26;// XOR 2 giá trị plantext và si giá trị Int
+                outputList.Add(Convert.ToInt32(item, 2) ^ Convert.ToInt32(si, 2));
                 Console.WriteLine("si= " + si);
-                Console.WriteLine("c= {0} <=> {1}",c, BinToString(c.ToString()));
+                Console.WriteLine("c= {0} <=> {1}", cInt, IntToString(cInt));
                 Console.WriteLine("---------------");
-                cyperText = cyperText + BinToString(c.ToString());
+                cyperText = cyperText + IntToString(cInt);
             }
             Console.WriteLine("CyperText= " + cyperText);
             Console.ReadLine();
+            Console.WriteLine("Decryption...");
+            string planText = null;
+            foreach (var item in outputList)
+            {
+                string input = Convert.ToString(item, 2);
+                    string newInput = null;
+                    for (int i = input.Length; i < 5; i++)
+                    {
+                        newInput = newInput + 0;
+                    }
+                    input = newInput + input;
+                string si = QuaySi(input, x, y, z, k);
+                Console.WriteLine(" p= {0}", input);
+                //Đang gặp lỗi khi cInt mod 26 thì output sai ký tự
+                var cInt = (Convert.ToInt32(input, 2) ^ Convert.ToInt32(si, 2)) % 26;// XOR 2 giá trị plantext và si giá trị Int
+                outputList.Add(Convert.ToInt32(input, 2) ^ Convert.ToInt32(si, 2));
+                Console.WriteLine("si= " + si);
+                Console.WriteLine("c= {0} <=> {1}", cInt, IntToString(cInt));
+                Console.WriteLine("---------------");
+                planText = planText + IntToString(cInt);
+            }
+            Console.WriteLine("PlanText= " + planText);
+            Console.ReadLine();
+
+        }
+        public static string QuaySi(string input, string x, string y, string z, string k)
+        {
+            string si = null;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (k.Length == 23) //Tiny A5/1 key
+                {
+                    int X = Int32.Parse(x.Substring(1, 1)), //t tại x
+                        Y = Int32.Parse(y.Substring(3, 1)), //t tại y
+                        Z = Int32.Parse(z.Substring(3, 1)); //t tại z
+                    if (X == maj(X, Y, Z))
+                    {
+                        //Quay X - XOR t
+                        int t = Int32.Parse(x.Substring(2, 1))
+                            ^ Int32.Parse(x.Substring(4, 1))
+                            ^ Int32.Parse(x.Substring(5, 1));
+                        x = t + x.Substring(0, 5);
+                    }
+                    if (Y == maj(X, Y, Z))
+                    {
+                        //Quay Y - XOR t
+                        int t = Int32.Parse(y.Substring(6, 1))
+                            ^ Int32.Parse(y.Substring(7, 1));
+                        y = t + y.Substring(0, 7);
+                    }
+                    if (Z == maj(X, Y, Z))
+                    {
+                        //Quay Z - XOR t
+                        int t = Int32.Parse(z.Substring(2, 1))
+                            ^ Int32.Parse(z.Substring(7, 1))
+                            ^ Int32.Parse(z.Substring(8, 1));
+                        z = t + z.Substring(0, 8);
+                    }
+                    int temp = (Int32.Parse(x.Substring(5, 1))
+                        ^ Int32.Parse(y.Substring(7, 1))
+                        ^ Int32.Parse(z.Substring(8, 1)));
+                    si = si + temp;
+                }
+            }
+
+            return si;
         }
     }
 }
