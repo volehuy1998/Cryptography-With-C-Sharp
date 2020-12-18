@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RC4", "RC4\RC4.csproj", "{E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Mã Dòng (Hoàng)", "1. Mã Dòng (Hoàng)", "{4DB5317E-E762-442F-9FF5-6BB83A56C159}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Lê Huy (Khác)", "2. Lê Huy (Khác)", "{7E374CA8-B8B8-4C89-8D80-7DEC93845AFC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Khác (Lê Huy)", "2. Khác (Lê Huy)", "{7E374CA8-B8B8-4C89-8D80-7DEC93845AFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
