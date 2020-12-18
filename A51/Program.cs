@@ -127,11 +127,11 @@ namespace A51
             Console.Write("Input: ", input);
             input = Console.ReadLine();
             string encrypt = A51(18, input);
-            Console.WriteLine("Encrypt Text: {0}", encrypt);
+            Console.WriteLine("Encryption Text: {0}", encrypt);
             Console.Write("....Press Enter key to Decrypt...");
             Console.ReadLine();
             string decrypt = A51(18, encrypt);
-            Console.WriteLine("Decrypt Text: {0}", decrypt);
+            Console.WriteLine("Decryption Text: {0}", decrypt);
             Console.ReadLine();
         }
     }

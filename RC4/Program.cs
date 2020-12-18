@@ -10,11 +10,15 @@ namespace RC4
     {
         static void Main(string[] args)
         {
-            string inputString = "aibietgidau";
+            Console.Write("Input: ");
+            string inputString = Console.ReadLine();
             string encrypt = RC4(inputString, "19981006");
+            Console.WriteLine("Encryption Text: {0}", encrypt);
+            Console.Write("....Press Enter key to Decrypt...");
+            Console.ReadLine();
             string decrypt = RC4(encrypt, "19981006");
-            Console.WriteLine(encrypt);
-            Console.WriteLine(decrypt);
+            Console.WriteLine("Decryption Text: {0}", decrypt);
+            Console.ReadLine();
         }
 
         public static string RC4(string input, string key)
