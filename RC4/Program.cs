@@ -10,14 +10,17 @@ namespace RC4
     {
         static void Main(string[] args)
         {
-            Console.Write("Input: ");
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.InputEncoding = Encoding.Unicode;
+
+            Console.Write("Nhập từ bản phím chuỗi cần mã hóa RC4: ");
             string inputString = Console.ReadLine();
             string encrypt = RC4(inputString, "19981006");
-            Console.WriteLine("Encryption Text: {0}", encrypt);
-            Console.Write("....Press Enter key to Decrypt...");
+            Console.WriteLine("Chuỗi sau khi được mã hóa: {0}", encrypt);
+            Console.Write("....Nhấn Enter để tiếp tục giải mã chuỗi trên...");
             Console.ReadLine();
             string decrypt = RC4(encrypt, "19981006");
-            Console.WriteLine("Decryption Text: {0}", decrypt);
+            Console.WriteLine("Chuỗi sau khi được giải mã: {0}", decrypt);
             Console.ReadLine();
         }
 
