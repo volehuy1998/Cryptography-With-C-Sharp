@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,6 @@ namespace A51
                 return 0;
             }
         }
-
         private static string A51(int loop ,string input)
         {
             int[] x = { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
@@ -121,7 +121,6 @@ namespace A51
             }
             return result.ToString();
         }
-
         private static byte[] A51InputFile(int loop, byte[] input)
         {
             int[] x = { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
@@ -221,8 +220,68 @@ namespace A51
             }
             return result.ToArray();
         }
+        public static string RC4(string input, string key)
+        {
+            StringBuilder result = new StringBuilder();
+            int x, y, j = 0;
+            int[] box = new int[256];
 
+            for (int i = 0; i < 256; i++)
+            {
+                box[i] = i;
+            }
 
+            for (int i = 0; i < 256; i++)
+            {
+                j = (key[i % key.Length] + box[i] + j) % 256;
+                x = box[i];
+                box[i] = box[j];
+                box[j] = x;
+            }
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                y = i % 256;
+                j = (box[y] + j) % 256;
+                x = box[y];
+                box[y] = box[j];
+                box[j] = x;
+
+                result.Append((char)(input[i] ^ box[(box[y] + box[j]) % 256]));
+            }
+            return result.ToString();
+        }
+        public static byte[] RC4InputFile(byte[] input, string key)
+        {
+            List<byte> result = new List<byte>();
+            int x, y, j = 0;
+            int[] box = new int[256];
+
+            for (int i = 0; i < 256; i++)
+            {
+                box[i] = i;
+            }
+
+            for (int i = 0; i < 256; i++)
+            {
+                j = (key[i % key.Length] + box[i] + j) % 256;
+                x = box[i];
+                box[i] = box[j];
+                box[j] = x;
+            }
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                y = i % 256;
+                j = (box[y] + j) % 256;
+                x = box[y];
+                box[y] = box[j];
+                box[j] = x;
+
+                result.Add((byte)(input[i] ^ box[(box[y] + box[j]) % 256]));
+            }
+            return result.ToArray();
+        }
         public static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.Unicode;
@@ -230,14 +289,16 @@ namespace A51
             int choose = 0;
             Console.WriteLine("----------Menu------------");
             Console.WriteLine("1. Mã hóa chuỗi bằng A5/1.");
-            Console.WriteLine("2. Mã hóa âm thanh bằng A5/1.");
+            Console.WriteLine("2. Mã hóa file bằng A5/1.");
+            Console.WriteLine("3. Mã hóa chuỗi bằng RC4.");
+            Console.WriteLine("4. Mã hóa file bằng RC4.");
             Console.Write("Nhập lựa chọn của bạn: ");
             Int32.TryParse(Console.ReadLine(),out choose);
 
             Random rnd = new Random();
             int loop = rnd.Next(1, 20);
             loop = 10;
-
+            Stopwatch stopWatch = new Stopwatch();
             switch (choose)
             {
                 case 1:
@@ -253,15 +314,62 @@ namespace A51
                     Console.ReadLine();
                     break;
                 case 2:
-                    byte[] bytes = File.ReadAllBytes("xinchao.mp3");
+                    Console.Write("Nhập tên file cần mã hóa A5/1: ");
+                    input = Console.ReadLine();
+                    byte[] bytes = File.ReadAllBytes("File/" + input);
+                    stopWatch.Start();
                     byte[] encryptFile = A51InputFile(loop, bytes);
-                    Console.WriteLine("Âm thanh đã được mã hóa: EncryptFile.mp3");
-                    File.WriteAllBytes("EncryptFile.mp3", encryptFile);
+                    stopWatch.Stop();
+                    Console.WriteLine("{0}ms", stopWatch.ElapsedMilliseconds);
+                    stopWatch.Reset();
+                    Console.WriteLine("File đã được mã hóa: En-A51-{0}", input);
+                    string filenameEncrypt = "File/En-A51-"+input;
+                    File.WriteAllBytes(filenameEncrypt, encryptFile);
                     Console.Write("....Nhấn Enter để tiếp tục giải mã âm thanh trên...");
                     Console.ReadLine();
+                    stopWatch.Start();
                     byte[] decryptFile = A51InputFile(loop, encryptFile);
-                    Console.WriteLine("Âm thanh đã được giải mã: DecryptFile.mp3", decryptFile);
-                    File.WriteAllBytes("DecryptFile.mp3", decryptFile);
+                    stopWatch.Stop();
+                    Console.WriteLine("{0}ms", stopWatch.ElapsedMilliseconds);
+                    stopWatch.Reset();
+                    string filenameDecrypt = "File/De-A51-" + input;
+                    Console.WriteLine("File đã được giải mã: De-A51-{0}", input);
+                    File.WriteAllBytes(filenameDecrypt, decryptFile);
+                    Console.ReadLine();
+                    break;
+                case 3:
+                    Console.Write("Nhập từ bản phím chuỗi cần mã hóa RC4: ");
+                    string inputString = Console.ReadLine();
+                    encrypt = RC4(inputString, "19981006");
+                    Console.WriteLine("Chuỗi sau khi được mã hóa: {0}", encrypt);
+                    Console.Write("....Nhấn Enter để tiếp tục giải mã chuỗi trên...");
+                    Console.ReadLine();
+                    decrypt = RC4(encrypt, "19981006");
+                    Console.WriteLine("Chuỗi sau khi được giải mã: {0}", decrypt);
+                    Console.ReadLine();
+                    break;
+                case 4:
+                    Console.Write("Nhập tên file cần mã hóa RC4: ");
+                    input = Console.ReadLine();
+                    bytes = File.ReadAllBytes("File/" + input);
+                    stopWatch.Start();
+                    encryptFile = RC4InputFile(bytes, "19981006");
+                    stopWatch.Stop();
+                    Console.WriteLine("{0}ms", stopWatch.ElapsedMilliseconds);
+                    stopWatch.Reset();
+                    Console.WriteLine("File đã được mã hóa: En-RC4-{0}", input);
+                    filenameEncrypt = "File/En-RC4-" + input;
+                    File.WriteAllBytes(filenameEncrypt, encryptFile);
+                    Console.Write("....Nhấn Enter để tiếp tục giải mã chuỗi trên...");
+                    Console.ReadLine();
+                    stopWatch.Start();
+                    decryptFile = RC4InputFile(encryptFile, "19981006");
+                    stopWatch.Stop();
+                    Console.WriteLine("{0}ms", stopWatch.ElapsedMilliseconds);
+                    stopWatch.Reset();
+                    filenameDecrypt = "File/De-RC4-" + input;
+                    Console.WriteLine("File đã được giải mã: De-RC4-{0}", input);
+                    File.WriteAllBytes(filenameDecrypt, decryptFile);
                     Console.ReadLine();
                     break;
             }
