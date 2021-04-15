@@ -340,11 +340,21 @@ namespace A51
                 case 3:
                     Console.Write("Nhập từ bản phím chuỗi cần mã hóa RC4: ");
                     string inputString = Console.ReadLine();
-                    encrypt = RC4(inputString, "19981006");
+                    encrypt = RC4(inputString, "0dd62c1565299b226e12816b19f38ff68c2ff10c0d3f9c5978cda5274acbcf2f");
                     Console.WriteLine("Chuỗi sau khi được mã hóa: {0}", encrypt);
+                    //bên gửi
+                    //Chuyển bản mã đã được mã hóa sang byte[] để thực hiển base64encode
+                    var a = Encoding.UTF32.GetBytes(encrypt);
+                    // chuyển sang chuỗi base64
+                    var base64encode = Convert.ToBase64String(a);
+                    // bên nhận
+                    // thực hiện decode
+                    var base64decode = Convert.FromBase64String(base64encode);
+                    // Lấy được chuỗi byte[] bên gửi convert sang string để thực hiện giải mã
+                    var b = Encoding.UTF32.GetString(base64decode);
                     Console.Write("....Nhấn Enter để tiếp tục giải mã chuỗi trên...");
                     Console.ReadLine();
-                    decrypt = RC4(encrypt, "19981006");
+                    decrypt = RC4(encrypt, "0dd62c1565299b226e12816b19f38ff68c2ff10c0d3f9c5978cda5274acbcf2f");
                     Console.WriteLine("Chuỗi sau khi được giải mã: {0}", decrypt);
                     Console.ReadLine();
                     break;
